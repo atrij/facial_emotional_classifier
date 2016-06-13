@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 # Read an image. TEst it with a relevant image eg. smiling girl
-img = cv2.imread("table.jpg")
+img = cv2.imread("smiling-girl.jpg")
 
 #COnvert image to gray scale
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
