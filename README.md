@@ -6,3 +6,6 @@ transformations, and robustness to changes in illumination, noise, and small cha
 
 For those who are more comfortable learning through video, check out https://www.youtube.com/watch?v=NPcMS49V5hg
 For people who like reading, see this http://docs.opencv.org/3.1.0/da/df5/tutorial_py_sift_intro.html#gsc.tab=0
+
+Now with the idea to get more distinct and compact descriptors (Dimensionality Reduction), we perform a Principal Component Analysis (PCA) on the SIFT descriptors. We select the first principal components following recommendations in the literature.
+To get more information on PCA, check out https://en.wikipedia.org/wiki/Principal_component_analysis
