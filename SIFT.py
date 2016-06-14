@@ -26,3 +26,7 @@ kp, des = sift.compute(gray, kp)
 print ("Size of descriptors - ", des.shape) #Descriptor is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
 print ("Length of first descriptor - ", len(des[0]))
 
+# Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
+mean, eigenvectors = cv2.PCACompute(des, mean = np.array([]))
+print eigenvectors[0]  #This is the first principal component for the particular image
+
