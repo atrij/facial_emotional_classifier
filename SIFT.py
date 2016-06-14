@@ -30,3 +30,4 @@ print ("Length of first descriptor - ", len(des[0]))
 mean, eigenvectors = cv2.PCACompute(des, mean = np.array([]))
 print eigenvectors[0]  #This is the first principal component for the particular image
 
+#Repository name changed
