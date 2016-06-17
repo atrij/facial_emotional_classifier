@@ -62,4 +62,28 @@ mean1, eigenvectors1 = cv2.PCACompute(des1, mean = np.array([]))
 mean2, eigenvectors2 = cv2.PCACompute(des2, mean = np.array([]))
 mean3, eigenvectors3 = cv2.PCACompute(des3, mean = np.array([]))
 
+eigenvectors = []
+eigenvectors.append(eigenvectors1)
+eigenvectors.append(eigenvectors2)
+eigenvectors.append(eigenvectors3)
+
+print("Size of eigenvector1 - ", len(eigenvectors1))
+print("Size of eigenvector2 - ", len(eigenvectors2))
+print("Size of eigenvector3 - ", len(eigenvectors3))
+
+descriptors = []
+for p in eigenvectors:
+
+    for q in eigenvectors1:
+
+        descriptors.append(q)
+
+print ("All eigenvectors at once - ", len(descriptors))
+
 #The next step is to use Bag of visual words approach
+bow = cv2.BOWKMeansTrainer(100)
+
+npDescriptors = np.array(descriptors)
+dictionary = bow.cluster(npDescriptors)
+print ("Dictionary - ", dictionary.shape)
+
