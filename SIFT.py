@@ -77,3 +77,9 @@ bow.add(eigenvectors3)
 dictionary = bow.cluster() # Creates a dictionary of visual words (Centroids of each of the clusters)
 print ("Dictionary - ", dictionary.shape)
 
+# Create a matcher to identify nearest neighbours
+matcher = cv2.DescriptorMatcher_create("BruteForce")
+
+bowDE = cv2.BOWImgDescriptorExtractor(None, matcher)
+bowDE.setVocabulary(dictionary)
+
