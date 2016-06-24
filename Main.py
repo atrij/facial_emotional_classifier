@@ -5,6 +5,7 @@ import numpy as np
 from ImageDrawer import ImageDrawer
 from ImageProcessor import ImageProcessor
 from ImageProvider import ImageProvider
+from PCA import PCA
 from SIFT import SIFT
 
 #This is just a test class.
@@ -38,19 +39,20 @@ imageDrawer.drawKeypoints(grayScaleImages[1], keyPoints[1])
 imageDrawer.drawKeypoints(grayScaleImages[2], keyPoints[2])
 
 # Get descriptors
-kp1, des1 = sift.compute(gray1, kp1)
-print ("Shape of descriptors1 - ", des1.shape) #Descriptor is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
+descriptors1 = sift.computeDescriptors(grayScaleImages[0], keyPoints[0])
+print ("Shape of descriptors1 - ", descriptors1.shape) #Descriptor is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
 
-kp2, des2 = sift.compute(gray2, kp2)
-print ("Shape of descriptors2 - ", des2.shape) #Descriptor is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
+descriptors2 = sift.computeDescriptors(grayScaleImages[1], keyPoints[1])
+print ("Shape of descriptors2 - ", descriptors2.shape) #Descriptor is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
 
-kp3, des3 = sift.compute(gray3, kp3)
-print ("Shape of descriptors3 - ", des3.shape) #Descriptor is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
+descriptors3 = sift.computeDescriptors(grayScaleImages[2], keyPoints[2])
+print ("Shape of descriptors3 - ", descriptors3.shape) #Descriptor is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
-mean1, eigenvectors1 = cv2.PCACompute(des1, mean = np.array([]))
-mean2, eigenvectors2 = cv2.PCACompute(des2, mean = np.array([]))
-mean3, eigenvectors3 = cv2.PCACompute(des3, mean = np.array([]))
+pca = PCA()
+eigenvectors1 = pca.computeEigenvectors(descriptors1)
+eigenvectors2 = pca.computeEigenvectors(descriptors2)
+eigenvectors3 = pca.computeEigenvectors(descriptors3)
 
 print("Shape of eigenvector1 - ", eigenvectors1.shape)
 print("Shape of eigenvector2 - ", eigenvectors2.shape)
