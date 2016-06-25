@@ -2,6 +2,13 @@ import cv2
 
 class ImageDrawer:
 
-    def drawKeypoints(self, image, keypoints):
-        image = cv2.drawKeypoints(image, keypoints, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        cv2.imwrite('sift_keypoints1.jpg', image)
+    @staticmethod
+    def drawKeypoints(imageList, keypointList):
+        length = min(len(imageList), len(keypointList))
+        i = 0
+
+        while(i<length):
+            image = cv2.drawKeypoints(imageList[i], keypointList[i], None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            cv2.imwrite(str(i) + ' - sift_keypoints.jpg', image)
+            i = i+1
+

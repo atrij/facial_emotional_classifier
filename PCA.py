@@ -3,6 +3,13 @@ import numpy as np
 
 class PCA:
 
-    def computeEigenvectors(self, descriptors):
-        mean, eigenvectors = cv2.PCACompute(descriptors, mean=np.array([]))
-        return eigenvectors
+    @staticmethod
+    def computeEigenvectors(descriptorsList):
+
+        eigenvectorsList = []
+
+        for descriptors in descriptorsList:
+            mean, eigenvectors = cv2.PCACompute(descriptors, mean=np.array([]))
+            eigenvectorsList.append(eigenvectors)
+
+        return  eigenvectorsList

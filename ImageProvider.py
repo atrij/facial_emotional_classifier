@@ -2,8 +2,8 @@ import cv2
 
 class ImageProvider:
 
-    # This has to be read from a database eventually
-    def getImages(self):
+    @staticmethod
+    def getImages():
 
         imgList = []
         img1 = cv2.imread("smiling-girl.jpg")
