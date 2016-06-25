@@ -12,9 +12,7 @@ from SIFT import SIFT
 imgList = ImageProvider.getImages() # Should pass the database path as parameter
 
 #Convert images to gray scale
-grayScaleImageList = []
-for image in imgList:
-    grayScaleImageList.append(ImageProcessor.convertImgToGrayScale(image))
+grayScaleImageList = ImageProcessor.convertImgListToGrayScale(imgList)
 
 # Some processing to be done on image for standardisation
 
@@ -22,9 +20,7 @@ for image in imgList:
 sift = SIFT(0, 3, 0.03, 10, 1.6)
 
 #Detect keypoints
-keyPointsList = []
-for grayScaleImage in grayScaleImageList:
-    keyPointsList.append(sift.detectKeyPoints(grayScaleImage))
+keyPointsList = sift.detectKeyPointsFromImageList(grayScaleImageList)
 
 print ("Length of keypoints1 - ", len(keyPointsList[0])) #Keypoint is a 1 dimensional list consisting of 439 keypoints
 print ("Length of keypoints2 - ", len(keyPointsList[1])) #Keypoint is a 1 dimensional list consisting of 138 keypoints

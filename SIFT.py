@@ -16,6 +16,14 @@ class SIFT:
     def detectKeyPoints(self, image):
         return self.sift.detect(image, None)
 
+    def detectKeyPointsFromImageList(self, imageList):
+        keypointsList = []
+
+        for image in imageList:
+            keypointsList.append(self.sift.detect(image, None))
+
+        return keypointsList
+
     def computeDescriptors(self, imageList, keypointsList):
         length = min(len(imageList), len(keypointsList))
         i = 0
