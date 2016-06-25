@@ -8,3 +8,5 @@ For those who are more comfortable learning through video, check out https://www
 For people who like reading, see this http://docs.opencv.org/3.1.0/da/df5/tutorial_py_sift_intro.html#gsc.tab=0
 
 Now with the idea to get more distinct and compact descriptors (Dimensionality Reduction), we perform a Principal Component Analysis (PCA) on the SIFT descriptors.To get more information on PCA, check out https://en.wikipedia.org/wiki/Principal_component_analysis
+
+Bag of Visual Vectors approach is now applied using kMeans clustering to build the image representation and each image is now a histogram of these clusters
