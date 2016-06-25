@@ -2,8 +2,6 @@ import cv2
 
 class SIFT:
 
-    sift = None;
-
     def __init__(self, features, octaveLayers, contrastThreshold, edgeThreshold, sigma):
         self.features = features
         self.octaveLayers = octaveLayers

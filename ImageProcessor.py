@@ -5,7 +5,7 @@ class ImageProcessor:
     @staticmethod
     def convertImgToGrayScale(image):
         grayScaleImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        print grayScaleImage.shape
+        print grayScaleImage.shape # 2 dimensional Matrix
         return grayScaleImage
 
     @staticmethod
