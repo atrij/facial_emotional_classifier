@@ -69,6 +69,6 @@ for emotion in emotions:
 print len(trainingDescriptorsList)
 
 bagOfVisualWords = BagOfVisualWords(clusterCount, trainingDescriptorsList)
-bagOfVisualWords.getHistogramForImages(eigenvectorsDictionary, emotions)
+histogramDictionary = bagOfVisualWords.getHistogramForImages(eigenvectorsDictionary, emotions)
 
 

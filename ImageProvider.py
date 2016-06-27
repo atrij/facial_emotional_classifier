@@ -39,7 +39,8 @@ class ImageProvider:
             imageList = []
             for path in paths:
                 image = cv2.imread(path)
-                imageList.append(image)
+                grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                imageList.append(grayImage)
 
             imageDictionary[emotion] = imageList
 

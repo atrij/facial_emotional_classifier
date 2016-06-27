@@ -27,6 +27,6 @@ class ImageProcessor:
 
         for file in files:
             image = cv2.imread(file)
-            grayImage = ImageProcessor.convertImgToGrayScale(image)
+            grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), grayImage)
             fileNumber = fileNumber + 1
