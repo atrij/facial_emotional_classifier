@@ -9,3 +9,8 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+*.pyc
+*.[jJ][pP][gG]
+*.[pP][nN][gG]
+
