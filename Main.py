@@ -1,10 +1,17 @@
 #Imports
 from BagOfVisualWords import BagOfVisualWords
+from DatasetOrganiser import DatasetOrganiser
 from ImageDrawer import ImageDrawer
 from ImageProcessor import ImageProcessor
 from ImageProvider import ImageProvider
 from PrincipalComponentAnalysis import PCA
 from SIFT import SIFT
+
+emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"] #Define emotion order
+datasetPathEmotions = "source_emotions"
+datasetPathImages = "source_images"
+# Organise dataset
+DatasetOrganiser.organiseDataset(emotions, datasetPathEmotions, datasetPathImages)
 
 # Read the images.
 imgList = ImageProvider.getImages() # Should pass the database path as parameter
