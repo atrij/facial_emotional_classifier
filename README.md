@@ -1,5 +1,9 @@
 # Facial_Emotional_Classifier
 
+We are using the Cohn-Kanade Facial Expression extended database (http://www.pitt.edu/~emotion/ck-spread.htm)
+We cannot distribute it so you will have to request it yourself (from the link above)
+DatasetOrganiser.py contains the code to organise the dataset. 
+
 To build an image representation, we use Bag of Words (BoW) and Fisher Vector (FV) approaches. Both BoW and FV featurizations rely on a beforehand computation of local descriptors of images. We choose
 to consider the very popular SIFT (Scale-Invariant Feature Transform) descriptors. Very interesting properties of these descriptors with respect to our problem are their invariance to affine
 transformations, and robustness to changes in illumination, noise, and small changes in view point.
