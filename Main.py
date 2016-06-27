@@ -38,21 +38,25 @@ sift = SIFT(0, 3, 0.03, 10, 1.6)
 #Detect keypoints
 keyPointsDictionary = sift.detectKeyPointsFromImageDictionary(imageDictionary, emotions)
 
-# Eg. of a keypoint
-print keyPointsDictionary["anger"]
+# Eg. of an image's keypoints
+print len(keyPointsDictionary["anger"][0])
 
 # Get descriptors
 descriptorsDictionary = sift.computeDescriptors(imageDictionary, keyPointsDictionary, emotions)
 
-print len(descriptorsDictionary["anger"])
+# Eg. of an image's descriptors
+print descriptorsDictionary["anger"][0].shape # n*128 matrix where n is number of keypoints. Each row is the descriptor for one keypoint.
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
 eigenvectorsDictionary = PrincipalComponentAnalysis.computeEigenvectors(descriptorsDictionary, emotions)
 
+# Eg. of an image's descriptors
+print eigenvectorsDictionary["anger"][0].shape # 128*128 matrix.
+
 #The next step is to use Bag of visual words approach.
 # Create Training Data for clustering
 trainingDescriptorsList = []
-clusterCount = 100
+clusterCount = 256
 
 for emotion in emotions:
 
@@ -61,6 +65,8 @@ for emotion in emotions:
     for p in eigenvectorsList:
         for q in p:
             trainingDescriptorsList.append(q)
+
+print len(trainingDescriptorsList)
 
 bagOfVisualWords = BagOfVisualWords(clusterCount, trainingDescriptorsList)
 bagOfVisualWords.getHistogramForImages(eigenvectorsDictionary, emotions)
