@@ -27,7 +27,7 @@ class DatasetOrganiser:
                         -1]  # get path for last image in sequence, which contains the emotion
 
                     sourcefile_neutral = glob.glob(datasetPathImages + "/%s/%s/*" % (part, current_session))[
-                        0]  # do same for neutral image
+                        0]  # do same for neutral imageD
 
                     dest_neut = "sorted_set\\neutral\\%s" % sourcefile_neutral[25:]  # Generate path to put neutral image
                     dest_emot = "sorted_set\\%s\\%s" % (

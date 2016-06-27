@@ -1,15 +1,22 @@
 import cv2
 import numpy as np
 
-class PCA:
+class PrincipalComponentAnalysis:
 
     @staticmethod
-    def computeEigenvectors(descriptorsList):
+    def computeEigenvectors(descriptorsDictionary, emotions):
 
-        eigenvectorsList = []
+        eigenvectorDictionary = {}
 
-        for descriptors in descriptorsList:
-            mean, eigenvectors = cv2.PCACompute(descriptors, mean=np.array([]))
-            eigenvectorsList.append(eigenvectors)
+        for emotion in emotions:
 
-        return  eigenvectorsList
+            eigenvectorsList = []
+            descriptorsList = descriptorsDictionary[emotion]
+
+            for descriptors in descriptorsList:
+                mean, eigenvectors = cv2.PCACompute(descriptors, mean=np.array([]))
+                eigenvectorsList.append(eigenvectors)
+
+            eigenvectorDictionary[emotion] = eigenvectorsList
+
+        return eigenvectorDictionary

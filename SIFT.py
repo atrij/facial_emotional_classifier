@@ -14,22 +14,38 @@ class SIFT:
     def detectKeyPoints(self, image):
         return self.sift.detect(image, None)
 
-    def detectKeyPointsFromImageList(self, imageList):
-        keypointsList = []
+    def detectKeyPointsFromImageDictionary(self, imageDictionary, emotions):
 
-        for image in imageList:
-            keypointsList.append(self.sift.detect(image, None))
+        keyPointDictionary = {}
 
-        return keypointsList
+        for emotion in emotions:
+            keypointsList = []
+            imageList = imageDictionary[emotion]
 
-    def computeDescriptors(self, imageList, keypointsList):
-        length = min(len(imageList), len(keypointsList))
-        i = 0
-        descriptorList = []
+            for image in imageList:
+                keypointsList.append(self.sift.detect(image, None))
 
-        while(i<length):
-            kp, des = self.sift.compute(imageList[i], keypointsList[i])
-            descriptorList.append(des)
-            i = i+1
+            keyPointDictionary[emotion] = keypointsList
 
-        return descriptorList
+        return keyPointDictionary
+
+    def computeDescriptors(self, imageDictionary, keypointsDictionary, emotions):
+
+        descriptorsDictionary = {}
+
+        for emotion in emotions:
+            imageList = imageDictionary[emotion]
+            keypointsList = keypointsDictionary[emotion]
+
+            length = min(len(imageList), len(keypointsList))
+            i = 0
+            descriptorList = []
+
+            while(i<length):
+                kp, des = self.sift.compute(imageList[i], keypointsList[i])
+                descriptorList.append(des)
+                i = i+1
+
+            descriptorsDictionary[emotion] = descriptorList
+
+        return descriptorsDictionary

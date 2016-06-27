@@ -1,11 +1,12 @@
 import cv2
+from ImageProvider import ImageProvider
+
 
 class ImageProcessor:
 
     @staticmethod
     def convertImgToGrayScale(image):
         grayScaleImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        print grayScaleImage.shape # 2 dimensional Matrix
         return grayScaleImage
 
     @staticmethod
@@ -14,6 +15,18 @@ class ImageProcessor:
         for image in imageList:
             grayScaleImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             grayScaleImageList.append(grayScaleImage)
-            print grayScaleImage.shape
 
         return grayScaleImageList
+
+
+    @staticmethod
+    def performPreprocessing(emotion):
+        files = ImageProvider.getImages(emotion)
+
+        fileNumber = 0
+
+        for file in files:
+            image = cv2.imread(file)
+            grayImage = ImageProcessor.convertImgToGrayScale(image)
+            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), grayImage)
+            fileNumber = fileNumber + 1

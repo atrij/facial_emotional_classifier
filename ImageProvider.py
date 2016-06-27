@@ -1,21 +1,46 @@
+import glob
+import random
 import cv2
 
 class ImageProvider:
 
     @staticmethod
-    def getImages():
+    def getImages(emotion):
 
-        imgList = []
-        img1 = cv2.imread("smiling-girl.jpg")
-        print ("Shape of image1 - ", img1.shape)  # Color image is a 3 dimensional matrix
-        imgList.append(img1)
+        files = glob.glob("sorted_set\\%s\\*" % emotion)
+        return files
 
-        img2 = cv2.imread("smiling_boy.jpg")
-        print ("Shape of image2 - ", img2.shape)
-        imgList.append(img2)
+    @staticmethod
+    def splitDataset(emotions):
 
-        img3 = cv2.imread("crying_boy.jpg")
-        print ("Shape of image3 - ", img3.shape)
-        imgList.append(img3)
+        trainingData = {}
+        testData = {}
 
-        return imgList
+        for emotion in emotions:
+            files = glob.glob("dataset\\%s\\*" % emotion)
+            random.shuffle(files)
+
+            training = files[:int(len(files) * 0.8)]  # get first 80% of file list
+            test = files[-int(len(files) * 0.2):]  # get last 20% of file list
+
+            trainingData[emotion] = training
+            testData[emotion] = test
+
+        return trainingData, testData
+
+    @staticmethod
+    def getImageDictionaryFromFilePaths(pathList, emotions):
+
+        imageDictionary = {}
+
+        for emotion in emotions:
+            paths = pathList[emotion]
+
+            imageList = []
+            for path in paths:
+                image = cv2.imread(path)
+                imageList.append(image)
+
+            imageDictionary[emotion] = imageList
+
+        return imageDictionary

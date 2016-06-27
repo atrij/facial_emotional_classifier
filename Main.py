@@ -1,62 +1,68 @@
 #Imports
 from BagOfVisualWords import BagOfVisualWords
 from DatasetOrganiser import DatasetOrganiser
-from ImageDrawer import ImageDrawer
 from ImageProcessor import ImageProcessor
 from ImageProvider import ImageProvider
-from PrincipalComponentAnalysis import PCA
+from PrincipalComponentAnalysis import PrincipalComponentAnalysis
 from SIFT import SIFT
 
 emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"] #Define emotion order
 datasetPathEmotions = "source_emotions"
 datasetPathImages = "source_images"
+
 # Organise dataset
 DatasetOrganiser.organiseDataset(emotions, datasetPathEmotions, datasetPathImages)
 
-# Read the images.
-imgList = ImageProvider.getImages() # Should pass the database path as parameter
+# Pre-process the images and save
+for emotion in emotions:
+    ImageProcessor.performPreprocessing(emotion)
 
-#Convert images to gray scale
-grayScaleImageList = ImageProcessor.convertImgListToGrayScale(imgList)
+# Split into training data and test data
+trainingData, testData = ImageProvider.splitDataset(emotions)
 
-# Some processing to be done on image for standardisation
+# Eg. of a training data
+print trainingData["anger"][0]
+
+# Eg. of a test data
+print testData["anger"][0]
+
+#Create imageDictionary for training Data
+imageDictionary = ImageProvider.getImageDictionaryFromFilePaths(trainingData, emotions)
+
+# Eg. of an image
+print imageDictionary["anger"][0].shape # 3 Dimensional vector
 
 # Create a SIFT object
 sift = SIFT(0, 3, 0.03, 10, 1.6)
 
 #Detect keypoints
-keyPointsList = sift.detectKeyPointsFromImageList(grayScaleImageList)
+keyPointsDictionary = sift.detectKeyPointsFromImageDictionary(imageDictionary, emotions)
 
-print ("Length of keypoints1 - ", len(keyPointsList[0])) #KeypointList[0] is a 1 dimensional list consisting of 439 keypoints
-print ("Length of keypoints2 - ", len(keyPointsList[1])) #KeypointList[1] is a 1 dimensional list consisting of 138 keypoints
-print ("Length of keypoints3 - ", len(keyPointsList[2])) #KeypointList[2] is a 1 dimensional list consisting of 908 keypoints
-
-#Draw keypoints
-ImageDrawer.drawKeypoints(grayScaleImageList, keyPointsList)
+# Eg. of a keypoint
+print keyPointsDictionary["anger"]
 
 # Get descriptors
-descriptorsList = sift.computeDescriptors(grayScaleImageList, keyPointsList)
-print ("Shape of descriptors1 - ", descriptorsList[0].shape) #DescriptorList[0] is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
-print ("Shape of descriptors2 - ", descriptorsList[1].shape) #DescriptorList[1] is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
-print ("Shape of descriptors3 - ", descriptorsList[2].shape) #DescriptorList[2] is a n*128 matrix where n is number of keypoints. Thus corresponding to each keypoint, we get a vector with 128 values as a descriptor
+descriptorsDictionary = sift.computeDescriptors(imageDictionary, keyPointsDictionary, emotions)
+
+print len(descriptorsDictionary["anger"])
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
-eigenvectorsList = PCA.computeEigenvectors(descriptorsList)
-
-print("Shape of eigenvector1 - ", eigenvectorsList[0].shape)
-print("Shape of eigenvector2 - ", eigenvectorsList[1].shape)
-print("Shape of eigenvector3 - ", eigenvectorsList[2].shape)
+eigenvectorsDictionary = PrincipalComponentAnalysis.computeEigenvectors(descriptorsDictionary, emotions)
 
 #The next step is to use Bag of visual words approach.
 # Create Training Data for clustering
 trainingDescriptorsList = []
 clusterCount = 100
 
-for p in eigenvectorsList:
-    for q in p:
-        trainingDescriptorsList.append(q)
+for emotion in emotions:
+
+    eigenvectorsList = eigenvectorsDictionary[emotion]
+
+    for p in eigenvectorsList:
+        for q in p:
+            trainingDescriptorsList.append(q)
 
 bagOfVisualWords = BagOfVisualWords(clusterCount, trainingDescriptorsList)
-bagOfVisualWords.getHistogramForImages(eigenvectorsList)
+bagOfVisualWords.getHistogramForImages(eigenvectorsDictionary, emotions)
 
 
