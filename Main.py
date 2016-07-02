@@ -1,11 +1,11 @@
 #Imports
-from BagOfVisualWords import BagOfVisualWords
-from Constants import Constants
-from DatasetOrganiser import DatasetOrganiser
-from ImageProcessor import ImageProcessor
-from ImageProvider import ImageProvider
-from PrincipalComponentAnalysis import PrincipalComponentAnalysis
-from SIFT import SIFT
+from config.Constants import Constants
+from dataset.DatasetOrganiser import DatasetOrganiser
+from descriptors.DescriptorExtractor import DescriptorExtractor
+from dimensionality_reduction.PrincipalComponentAnalysis import PrincipalComponentAnalysis
+from image_operations.ImageProcessor import ImageProcessor
+from image_operations.ImageProvider import ImageProvider
+from pooling.BagOfVisualWords import BagOfVisualWords
 
 emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions
@@ -31,22 +31,12 @@ print testData[emotions[1]][0]
 imageDictionary = ImageProvider.getImageDictionaryFromFilePaths(trainingData, emotions)
 
 # Eg. of an image
+print imageDictionary
 print imageDictionary[emotions[1]][0].shape # 3 Dimensional vector
 
-# Create a SIFT object
-sift = SIFT(0, 3, 0.03, 10, 1.6)
-
-#Detect keypoints
-keyPointsDictionary = sift.detectKeyPointsFromImageDictionary(imageDictionary, emotions)
-
-# Eg. of an image's keypoints
-print len(keyPointsDictionary[emotions[1]][0])
-
-# Get descriptors
-descriptorsDictionary = sift.computeDescriptors(imageDictionary, keyPointsDictionary, emotions)
-
-# Eg. of an image's descriptors
-print descriptorsDictionary[emotions[1]][0].shape # n*128 matrix where n is number of keypoints. Each row is the descriptor for one keypoint.
+# Calculate Descriptors
+argumentList = [0, 3, 0.03, 10, 1.6]
+descriptorsDictionary = DescriptorExtractor.extractDescriptors("SIFT", argumentList, imageDictionary, emotions)
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
 eigenvectorsDictionary = PrincipalComponentAnalysis.computeEigenvectors(descriptorsDictionary, emotions)

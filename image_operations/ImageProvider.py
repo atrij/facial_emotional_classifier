@@ -40,7 +40,7 @@ class ImageProvider:
             for path in paths:
                 image = cv2.imread(path, 0)
 
-                if(image != None):
+                if(image is not None):
                     imageList.append(image)
 
             imageDictionary[emotion] = imageList
