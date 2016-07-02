@@ -2,10 +2,10 @@
 from config.Constants import Constants
 from dataset.DatasetOrganiser import DatasetOrganiser
 from descriptors.DescriptorExtractor import DescriptorExtractor
-from dimensionality_reduction.PrincipalComponentAnalysis import PrincipalComponentAnalysis
+from dimensionality_reduction.DimensionalityReducer import DimensionalityReducer
 from image_operations.ImageProcessor import ImageProcessor
 from image_operations.ImageProvider import ImageProvider
-from pooling.BagOfVisualWords import BagOfVisualWords
+from pooling.DescriptorPooler import DescriptorPooler
 
 emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions
@@ -39,12 +39,14 @@ argumentList = [0, 3, 0.03, 10, 1.6]
 descriptorsDictionary = DescriptorExtractor.extractDescriptors("SIFT", argumentList, imageDictionary, emotions)
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
-eigenvectorsDictionary = PrincipalComponentAnalysis.computeEigenvectors(descriptorsDictionary, emotions)
+pcaArgumentList = [descriptorsDictionary, emotions]
+eigenvectorsDictionary = DimensionalityReducer.reduceDimensionality("PCA", pcaArgumentList)
 
 # Eg. of an image's descriptors
 print eigenvectorsDictionary[emotions[1]][0].shape # 128*128 matrix.
 
 #The next step is to use Bag of visual words approach.
+
 # Create Training Data for clustering
 trainingDescriptorsList = []
 clusterCount = 256
@@ -59,7 +61,7 @@ for emotion in emotions:
 
 print len(trainingDescriptorsList)
 
-bagOfVisualWords = BagOfVisualWords(clusterCount, trainingDescriptorsList)
-histogramDictionary = bagOfVisualWords.getHistogramForImages(eigenvectorsDictionary, emotions)
+bovwArgumentList = [clusterCount, trainingDescriptorsList, eigenvectorsDictionary, emotions]
+histogramDictionary = DescriptorPooler.poolDescriptors("BoVW", bovwArgumentList)
 
 
