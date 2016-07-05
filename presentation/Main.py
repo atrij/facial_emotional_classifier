@@ -4,7 +4,7 @@ from domain.service.config.Constants import Constants
 from domain.service.dataset.DatasetService import DatasetService
 from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractor
 from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPooler
-from domain.service.dimensionality_reduction.DimensionalityReducerService import DimensionalityReducer
+from domain.service.dimensionality_reduction.DimensionalityReducerService import DimensionalityReducerService
 from domain.service.image_operations.ImagePreProcessService import ImagePreProcessService
 
 
@@ -12,9 +12,9 @@ def constructTrainingDescriptorsList():
     trainingDescriptorsList = []
     for emotion in emotions:
 
-        eigenvectorsList = eigenvectorsDictionary[emotion]
+        eigenvectorListList = eigenvectorsDictionary[emotion]
 
-        for p in eigenvectorsList:
+        for p in eigenvectorListList:
             for q in p:
                 trainingDescriptorsList.append(q)
 
@@ -59,7 +59,7 @@ descriptorsDictionary = DescriptorExtractor.extractDescriptors(Constants.sift, s
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
 pcaArgumentList = [descriptorsDictionary, emotions]
-eigenvectorsDictionary = DimensionalityReducer.reduceDimensionality(Constants.pca, pcaArgumentList)
+eigenvectorsDictionary = DimensionalityReducerService.reduceDimensionality(Constants.pca, pcaArgumentList)
 
 #The next step is to use Bag of visual words approach.
 # Create Training Data for clustering

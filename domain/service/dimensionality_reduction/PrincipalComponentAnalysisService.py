@@ -10,13 +10,13 @@ class PrincipalComponentAnalysis:
 
         for emotion in emotions:
 
-            eigenvectorsList = []
-            descriptorsList = descriptorsDictionary[emotion]
+            eigenvectorListList = []
+            descriptorListList = descriptorsDictionary[emotion]
 
-            for descriptors in descriptorsList:
-                mean, eigenvectors = cv2.PCACompute(descriptors, mean=np.array([]))
-                eigenvectorsList.append(eigenvectors)
+            for descriptorList in descriptorListList:
+                mean, eigenvectorList = cv2.PCACompute(descriptorList, mean=np.array([]))
+                eigenvectorListList.append(eigenvectorList)
 
-            eigenvectorDictionary[emotion] = eigenvectorsList
+            eigenvectorDictionary[emotion] = eigenvectorListList
 
         return eigenvectorDictionary

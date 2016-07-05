@@ -15,22 +15,22 @@ class BagOfVisualWords:
 
         for emotion in emotions:
 
-            eigenvectorsList = eigenVectorsDictionary[emotion]
-            histogramList = []
+            eigenvectorListList = eigenVectorsDictionary[emotion]
+            histogramArrayList = []
 
-            for eigenvectors in eigenvectorsList:
+            for eigenvectorList in eigenvectorListList:
 
-                img_clustered_words = kMeans.predict(eigenvectors) # Each descriptor is mapped to a word
+                img_clustered_words = kMeans.predict(eigenvectorList) # Each descriptor is mapped to a word
 
                 histogram = np.array(
                     [np.bincount(img_clustered_words, minlength=self.clusterCount)]) # Create a histogram ; how many times does a word (cluster) come in an image?
 
                 histogramArray = np.array(histogram)
 
-                histogramList.append(histogramArray)
+                histogramArrayList.append(histogramArray)
 
-            histogramDictionary[emotion] = histogramList
+            histogramDictionary[emotion] = histogramArrayList
 
-        print ("Length of Histogram List for one emotion - ", len(histogramDictionary["contempt"]))
-        print ("One histogram for contempt - ", histogramDictionary["contempt"][0])
+        print ("Length of HistogramArrayList for one emotion - ", len(histogramDictionary["contempt"]))
+        print ("Length of HistogramArray for a random image in one emotion - ", len(histogramDictionary["contempt"][0]))
         return histogramDictionary
