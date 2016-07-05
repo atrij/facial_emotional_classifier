@@ -9,7 +9,7 @@ class Config:
     #Preprocessing
     isPreProcessingDone = False
 
-    shouldPerformPCA = True
+    shouldPerformDimensionalityReduction = True
 
     bovwClusterCount = 256
 
@@ -33,3 +33,22 @@ class Config:
     def getPreprocessingMethodList():
         preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR]
         return preProcessingMethodList
+
+    @staticmethod
+    def checkConfigurations():
+
+        if Config.isDatasetOrganised is False & Config.isPreProcessingDone is True:
+            raise ValueError(" Preprocessing is required if dataset organisation is performed")
+
+        if Config.getDatasetName() not in Constants.datasetList:
+            raise ValueError("Invalid Dataset Name")
+
+        if Config.getDescriptorExractorMethodName() not in Constants.desriptorExtractorMethodList:
+            raise ValueError("Invalid DescriptorExtraction Method Name")
+
+        if Config.getDescriptorPoolingMethodName() not in Constants.descriptorPoolingMethodList:
+            raise ValueError("Invalid DescriptorPooling Method Name")
+
+        if Config.shouldPerformDimensionalityReduction is True:
+            if Config.getDimensionalityReductionMethodName() not in Constants.dimensionalityReductionMethodList:
+                raise ValueError("Invalid DimensionalityReduction Method Name")
