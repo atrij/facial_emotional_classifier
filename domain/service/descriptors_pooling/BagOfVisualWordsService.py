@@ -8,7 +8,7 @@ class BagOfVisualWords:
         self.trainingDescriptorsList = trainingDescriptorsList
 
     def getHistogramForImages(self, eigenVectorsDictionary, emotions):
-        kMeans = KMeans(100)
+        kMeans = KMeans(self.clusterCount)
         kMeans.fit(self.trainingDescriptorsList) # Cluster the descriptors to form words
 
         histogramDictionary = {}

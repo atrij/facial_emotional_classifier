@@ -19,3 +19,6 @@ class Constants:
 
     #Dimensionality Reduction Methods
     pca = "PCA"
+
+    # Descriptor Pooling Methods
+    bagOfVisualWords = "BoVW"

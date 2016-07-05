@@ -1,10 +1,24 @@
 #Imports
 from data.service.DatasetService import DatasetService
+from domain.service.config.Config import Config
 from domain.service.config.Constants import Constants
 from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractor
 from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPooler
 from domain.service.dimensionality_reduction.DimensionalityReducerService import DimensionalityReducer
 from domain.service.image_operations.ImagePreProcessService import ImagePreProcessService
+
+def constructTrainingDescriptorsList():
+    trainingDescriptorsList = []
+    for emotion in emotions:
+
+        eigenvectorsList = eigenvectorsDictionary[emotion]
+
+        for p in eigenvectorsList:
+            for q in p:
+                trainingDescriptorsList.append(q)
+
+    return trainingDescriptorsList
+
 
 emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions
@@ -46,22 +60,10 @@ eigenvectorsDictionary = DimensionalityReducer.reduceDimensionality(Constants.pc
 print eigenvectorsDictionary[emotions[1]][0].shape # 128*128 matrix.
 
 #The next step is to use Bag of visual words approach.
-
 # Create Training Data for clustering
-trainingDescriptorsList = []
-clusterCount = 256
-
-for emotion in emotions:
-
-    eigenvectorsList = eigenvectorsDictionary[emotion]
-
-    for p in eigenvectorsList:
-        for q in p:
-            trainingDescriptorsList.append(q)
+trainingDescriptorsList = constructTrainingDescriptorsList()
 
 print len(trainingDescriptorsList)
 
-bovwArgumentList = [clusterCount, trainingDescriptorsList, eigenvectorsDictionary, emotions]
-histogramDictionary = DescriptorPooler.poolDescriptors("BoVW", bovwArgumentList)
-
-
+bovwArgumentList = [Config.bovwClusterCount, trainingDescriptorsList, eigenvectorsDictionary, emotions]
+histogramDictionary = DescriptorPooler.poolDescriptors(Constants.bagOfVisualWords, bovwArgumentList)
