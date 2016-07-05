@@ -23,6 +23,9 @@ class SIFT:
             keypointListList = []
             imageList = imageDictionary[emotion]
 
+            if(emotion == "contempt"):
+                print ("Length of imageList - ", len(imageList))
+
             for image in imageList:
 
                 if(printCounter == 0):

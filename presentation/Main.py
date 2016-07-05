@@ -27,15 +27,14 @@ datasetPathImages = Constants.datasetPathImages
 
 # Organise dataset
 if Config.isDatasetOrganised is False:
-    DatasetService.organiseDataset(Constants.cohn_Kanade_extended, emotions, datasetPathEmotions, datasetPathImages)
+    DatasetService.organiseDataset(Config.getDatasetName(), emotions, datasetPathEmotions, datasetPathImages)
     print "Dataset Organised"
 
 # Pre-process the images and save
 
 if Config.isPreProcessingDone is False:
-    preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR]
     for emotion in emotions:
-        ImagePreProcessService.performPreprocessing(preProcessingMethodList, emotion)
+        ImagePreProcessService.performPreprocessing(Config.getPreprocessingMethodList(), emotion)
     print "Preprocessing step complete"
 
 # Split into training data and test data
@@ -55,11 +54,11 @@ print ("Shape of a random image -- ", imageDictionary[emotions[1]][0].shape) # 3
 
 # Calculate Descriptors
 siftArgumentList = [0, 3, 0.03, 10, 1.6]
-descriptorsDictionary = DescriptorExtractor.extractDescriptors(Constants.sift, siftArgumentList, imageDictionary, emotions)
+descriptorsDictionary = DescriptorExtractor.extractDescriptors(Config.getDescriptorExractorMethodName(), siftArgumentList, imageDictionary, emotions)
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
 pcaArgumentList = [descriptorsDictionary, emotions]
-eigenvectorsDictionary = DimensionalityReducerService.reduceDimensionality(Constants.pca, pcaArgumentList)
+eigenvectorsDictionary = DimensionalityReducerService.reduceDimensionality(Config.getDimensionalityReductionMethodName(), pcaArgumentList)
 
 #The next step is to use Bag of visual words approach.
 # Create Training Data for clustering
@@ -67,4 +66,4 @@ trainingDescriptorsList = constructTrainingDescriptorsList()
 print ("Length of training Descriptors - ", len(trainingDescriptorsList))
 
 bovwArgumentList = [Config.bovwClusterCount, trainingDescriptorsList, eigenvectorsDictionary, emotions]
-histogramDictionary = DescriptorPooler.poolDescriptors(Constants.bagOfVisualWords, bovwArgumentList)
+histogramDictionary = DescriptorPooler.poolDescriptors(Config.getDescriptorPoolingMethodName(), bovwArgumentList)
