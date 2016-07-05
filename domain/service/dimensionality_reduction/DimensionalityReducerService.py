@@ -9,7 +9,6 @@ class DimensionalityReducer:
 
         if(modelName == Constants.pca):
             eigenvectorsDictionary = PrincipalComponentAnalysis.computeEigenvectors(argumentList[0], argumentList[1])
-            print ("EigenVector Dictionary - ", eigenvectorsDictionary)
-            print ("Eigenvector List for one emotion - ", eigenvectorsDictionary["anger"])
+            print ("Eigenvector List for one emotion Shape - ", eigenvectorsDictionary["anger"].shape)
             print ("One eigenvector for anger - ", eigenvectorsDictionary["anger"][0])
             return eigenvectorsDictionary

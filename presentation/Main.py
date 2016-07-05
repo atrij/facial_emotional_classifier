@@ -24,15 +24,18 @@ emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions
 datasetPathImages = Constants.datasetPathImages
 
-# Organise service
-DatasetService.organiseDataset(Constants.cohn_Kanade_extended, emotions, datasetPathEmotions, datasetPathImages)
-print "Dataset Organised"
+# Organise dataset
+if Config.isDatasetOrganised is False:
+    DatasetService.organiseDataset(Constants.cohn_Kanade_extended, emotions, datasetPathEmotions, datasetPathImages)
+    print "Dataset Organised"
 
 # Pre-process the images and save
-preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR]
-for emotion in emotions:
-    ImagePreProcessService.performPreprocessing(preProcessingMethodList, emotion)
-print "Preprocessing step complete"
+
+if Config.isPreProcessingDone is False:
+    preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR]
+    for emotion in emotions:
+        ImagePreProcessService.performPreprocessing(preProcessingMethodList, emotion)
+    print "Preprocessing step complete"
 
 # Split into training data and test data
 trainingData, testData = DatasetService.splitDataset(emotions)
@@ -47,7 +50,6 @@ print "Test file example - " + testData[emotions[1]][0]
 imageDictionary = DatasetService.getImageDictionaryFromFilePaths(trainingData, emotions)
 
 # Eg. of an image dictionary and image
-print ("Image Dictionary -- ", imageDictionary)
 print ("Example of an image -- ", imageDictionary[emotions[1]][0].shape) # 3 Dimensional vector
 
 # Calculate Descriptors

@@ -33,7 +33,6 @@ class BagOfVisualWords:
 
             histogramDictionary[emotion] = histogramList
 
-        print ("Histogram Dictionary - ", histogramDictionary)
-        print ("Histogram List for one emotion - ", histogramDictionary["anger"])
+        print ("Histogram List for one emotion shape- ", histogramDictionary["anger"].shape)
         print ("One histogram for anger - ", histogramDictionary["anger"][0])
         return histogramDictionary

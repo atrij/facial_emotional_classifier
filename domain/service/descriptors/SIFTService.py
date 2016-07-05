@@ -33,7 +33,6 @@ class SIFT:
 
             keyPointDictionary[emotion] = keypointsList
 
-        print ("Keypoint Dictionary - ", keyPointDictionary)
         print ("Keypoint List for one emotion - ", keyPointDictionary["anger"])
         print ("One keypoint for anger - ", keyPointDictionary["anger"][0])
         return keyPointDictionary
@@ -62,7 +61,6 @@ class SIFT:
 
             descriptorsDictionary[emotion] = descriptorList
 
-        print ("Descriptor Dictionary - ", descriptorsDictionary)
-        print ("Descriptor List for one emotion - ", descriptorsDictionary["anger"])
+        print ("Descriptor List for one emotion Length- ", descriptorsDictionary["anger"].shape)
         print ("One descriptor for anger - ", descriptorsDictionary["anger"][0])
         return descriptorsDictionary
