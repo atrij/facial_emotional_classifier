@@ -32,5 +32,5 @@ class BagOfVisualWords:
             histogramDictionary[emotion] = histogramArrayList
 
         print ("Length of HistogramArrayList for one emotion - ", len(histogramDictionary["contempt"]))
-        print ("Length of HistogramArray for a random image in one emotion - ", len(histogramDictionary["contempt"][0]))
+        print ("Length of HistogramArray for a random image in one emotion - ", histogramDictionary["contempt"][0].shape)
         return histogramDictionary

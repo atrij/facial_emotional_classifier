@@ -26,6 +26,7 @@ class ImagePreProcessService:
             faceDetectionHAAR = True
 
         files = DatasetService.getImages(emotion)
+        print ("Number of images before preprocessing for %s is %d", (emotion, len(files)))
 
         fileNumber = 0
 

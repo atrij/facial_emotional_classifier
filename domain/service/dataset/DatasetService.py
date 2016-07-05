@@ -23,6 +23,7 @@ class DatasetService:
 
         for emotion in emotions:
             files = Database.getProcessedFiles(emotion)
+            print ("Number of images at time of splitting dataset for %s is %d", (emotion, len(files)))
             random.shuffle(files)
 
             training = files[:int(len(files) * 0.8)]  # get first 80% of file list
@@ -31,9 +32,7 @@ class DatasetService:
             trainingData[emotion] = training
             testData[emotion] = test
 
-            if(emotion == "contempt"):
-                print ("Number of training images for contempt - ", len(training))
-                print ("Number of test images for contempt - ", len(test))
+            print ("Number of training images for %s is %d ", (emotion, len(training)))
 
         return trainingData, testData
 
@@ -44,21 +43,24 @@ class DatasetService:
         return files
 
     @staticmethod
-    def getImageDictionaryFromFilePaths(pathList, emotions):
+    def getImageDictionaryFromFilePaths(pathDictionary, emotions):
 
         imageDictionary = {}
 
         for emotion in emotions:
-            paths = pathList[emotion]
+            pathList = pathDictionary[emotion]
+
+            print ("Number of images before making imageDictionary for %s is %d", (emotion, len(pathList)))
 
             imageList = []
-            for path in paths:
+            for path in pathList:
                 image = cv2.imread(path, 0)
 
                 if (image is not None):
                     imageList.append(image)
 
             imageDictionary[emotion] = imageList
+            print ("Number of images after making imageDictionary for %s is %d", (emotion, len(imageDictionary[emotion])))
 
         return imageDictionary
 

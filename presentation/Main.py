@@ -31,7 +31,6 @@ if Config.isDatasetOrganised is False:
     print "Dataset Organised"
 
 # Pre-process the images and save
-
 if Config.isPreProcessingDone is False:
     for emotion in emotions:
         ImagePreProcessService.performPreprocessing(Config.getPreprocessingMethodList(), emotion)
