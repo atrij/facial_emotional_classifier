@@ -19,34 +19,36 @@ def constructTrainingDescriptorsList():
 
     return trainingDescriptorsList
 
-
+print " ----- START ------ "
 emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions
 datasetPathImages = Constants.datasetPathImages
 
 # Organise service
 DatasetService.organiseDataset(Constants.cohn_Kanade_extended, emotions, datasetPathEmotions, datasetPathImages)
+print "Dataset Organised"
 
 # Pre-process the images and save
 preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR]
 for emotion in emotions:
     ImagePreProcessService.performPreprocessing(preProcessingMethodList, emotion)
+print "Preprocessing step complete"
 
 # Split into training data and test data
 trainingData, testData = DatasetService.splitDataset(emotions)
 
 # Eg. of a training data
-print trainingData[emotions[1]][0]
+print "Training File example - " + trainingData[emotions[1]][0]
 
 # Eg. of a test data
-print testData[emotions[1]][0]
+print "Test file example - " + testData[emotions[1]][0]
 
 #Create imageDictionary for training Data
 imageDictionary = DatasetService.getImageDictionaryFromFilePaths(trainingData, emotions)
 
 # Eg. of an image dictionary and image
-print imageDictionary
-print imageDictionary[emotions[1]][0].shape # 3 Dimensional vector
+print ("Image Dictionary -- ", imageDictionary)
+print ("Example of an image -- ", imageDictionary[emotions[1]][0].shape) # 3 Dimensional vector
 
 # Calculate Descriptors
 siftArgumentList = [0, 3, 0.03, 10, 1.6]
@@ -56,14 +58,10 @@ descriptorsDictionary = DescriptorExtractor.extractDescriptors(Constants.sift, s
 pcaArgumentList = [descriptorsDictionary, emotions]
 eigenvectorsDictionary = DimensionalityReducer.reduceDimensionality(Constants.pca, pcaArgumentList)
 
-# Eg. of an image's descriptors
-print eigenvectorsDictionary[emotions[1]][0].shape # 128*128 matrix.
-
 #The next step is to use Bag of visual words approach.
 # Create Training Data for clustering
 trainingDescriptorsList = constructTrainingDescriptorsList()
-
-print len(trainingDescriptorsList)
+print ("Length of training Descriptors - ", len(trainingDescriptorsList))
 
 bovwArgumentList = [Config.bovwClusterCount, trainingDescriptorsList, eigenvectorsDictionary, emotions]
 histogramDictionary = DescriptorPooler.poolDescriptors(Constants.bagOfVisualWords, bovwArgumentList)

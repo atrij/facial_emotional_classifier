@@ -12,6 +12,7 @@ class DatasetService:
     def organiseDataset(datasetName, emotions, datasetPathEmotions, datasetPathImages):
 
         if(datasetName == Constants.cohn_Kanade_extended):
+            print "Cohn Kanade Extended Dataset Detected"
             DatasetService.__organiseCKDataset(datasetPathEmotions, datasetPathImages, emotions)
 
     @staticmethod
