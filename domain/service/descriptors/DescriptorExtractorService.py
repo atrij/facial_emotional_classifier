@@ -11,13 +11,7 @@ class DescriptorExtractor:
             # Detect keypoints
             keyPointsDictionary = sift.detectKeyPointsFromImageDictionary(imageDictionary, emotions)
 
-            # Eg. of an image's keypoints
-            print len(keyPointsDictionary[emotions[1]][0])
-
             # Get descriptors
             descriptorsDictionary = sift.computeDescriptors(imageDictionary, keyPointsDictionary, emotions)
-
-            # Eg. of an image's descriptors
-            print descriptorsDictionary[emotions[1]][0].shape  # n*128 matrix where n is number of keypoints. Each row is the descriptor for one keypoint.
 
             return descriptorsDictionary

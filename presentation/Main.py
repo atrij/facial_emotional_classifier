@@ -41,16 +41,16 @@ if Config.isPreProcessingDone is False:
 trainingData, testData = DatasetService.splitDataset(emotions)
 
 # Eg. of a training data
-print "Training File example - " + trainingData[emotions[1]][0]
+print "Training File example - " + trainingData[emotions[2]][0]
 
 # Eg. of a test data
-print "Test file example - " + testData[emotions[1]][0]
+print "Test file example - " + testData[emotions[2]][0]
 
 #Create imageDictionary for training Data
 imageDictionary = DatasetService.getImageDictionaryFromFilePaths(trainingData, emotions)
 
 # Eg. of an image dictionary and image
-print ("Example of an image -- ", imageDictionary[emotions[1]][0].shape) # 3 Dimensional vector
+print ("Shape of a random image -- ", imageDictionary[emotions[1]][0].shape) # 3 Dimensional vector
 
 # Calculate Descriptors
 siftArgumentList = [0, 3, 0.03, 10, 1.6]

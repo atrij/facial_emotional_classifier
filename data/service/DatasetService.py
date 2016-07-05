@@ -25,11 +25,15 @@ class DatasetService:
             files = glob.glob("dataset\\%s\\*" % emotion)
             random.shuffle(files)
 
-            training = files[:int(len(files) * 0.8)]  # get first 80% of file list
-            test = files[-int(len(files) * 0.2):]  # get last 20% of file list
+            training = files[:int(len(files) * 0.2)]  # get first 80% of file list
+            test = files[-int(len(files) * 0.8):]  # get last 20% of file list
 
             trainingData[emotion] = training
             testData[emotion] = test
+
+            if(emotion == "contempt"):
+                print ("Number of training images for contempt - ", len(training))
+                print ("Number of test images for contempt - ", len(test))
 
         return trainingData, testData
 

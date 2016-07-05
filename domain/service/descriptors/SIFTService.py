@@ -26,15 +26,14 @@ class SIFT:
             for image in imageList:
 
                 if(printCounter == 0):
-                    print ("Example of a keypoint - ", self.sift.detect(image, None))
+                    print ("Number of keypoints in a random image - ", len(self.sift.detect(image, None)))
                     printCounter = 1
 
                 keypointsList.append(self.sift.detect(image, None))
 
             keyPointDictionary[emotion] = keypointsList
 
-        print ("Keypoint List for one emotion - ", keyPointDictionary["anger"])
-        print ("One keypoint for anger - ", keyPointDictionary["anger"][0])
+        print ("Length of Keypoint List for one emotion - ", len(keyPointDictionary["contempt"]))
         return keyPointDictionary
 
     def computeDescriptors(self, imageDictionary, keypointsDictionary, emotions):
@@ -55,12 +54,12 @@ class SIFT:
                 descriptorList.append(des)
                 i = i+1
                 if(printCounter ==0):
-                    print ("Example of a descriptor - ", des)
+                    print ("Number of descriptors for an image - ", len(des))
                     print ("Shape of the descriptor - ", des.shape)
                     printCounter = 1
 
             descriptorsDictionary[emotion] = descriptorList
 
-        print ("Descriptor List for one emotion Length- ", descriptorsDictionary["anger"].shape)
-        print ("One descriptor for anger - ", descriptorsDictionary["anger"][0])
+        print ("Length of Descriptor List for one emotion - ", len(descriptorsDictionary["contempt"]))
+        print ("One descriptor for contempt - ", descriptorsDictionary["contempt"][0])
         return descriptorsDictionary
