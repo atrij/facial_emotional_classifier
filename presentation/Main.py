@@ -21,6 +21,23 @@ def constructTrainingDescriptorsList():
     return trainingDescriptorsList
 
 print " ----- START ------ "
+
+# Check Configurations
+if Config.isDatasetOrganised is False & Config.isPreProcessingDone is True:
+    raise ValueError(" Preprocessing is required if dataset organisation is performed")
+
+if Config.getDatasetName() not in Constants.datasetList:
+    raise ValueError("Invalid Dataset Name")
+
+if Config.getDescriptorExractorMethodName() not in Constants.desriptorExtractorMethodList:
+    raise ValueError("Invalid DescriptorExtraction Method Name")
+
+if Config.getDimensionalityReductionMethodName() not in Constants.dimensionalityReductionMethodList:
+    raise ValueError("Invalid DimensionalityReduction Method Name")
+
+if Config.getDescriptorPoolingMethodName() not in Constants.descriptorPoolingMethodList:
+    raise ValueError("Invalid DescriptorPooling Method Name")
+
 emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions
 datasetPathImages = Constants.datasetPathImages
@@ -55,9 +72,12 @@ print ("Shape of a random image -- ", imageDictionary[emotions[1]][0].shape) # 3
 siftArgumentList = [0, 3, 0.03, 10, 1.6]
 descriptorsDictionary = DescriptorExtractor.extractDescriptors(Config.getDescriptorExractorMethodName(), siftArgumentList, imageDictionary, emotions)
 
-# Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
-pcaArgumentList = [descriptorsDictionary, emotions]
-eigenvectorsDictionary = DimensionalityReducerService.reduceDimensionality(Config.getDimensionalityReductionMethodName(), pcaArgumentList)
+if Config.shouldPerformPCA is True:
+    # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
+    pcaArgumentList = [descriptorsDictionary, emotions]
+    eigenvectorsDictionary = DimensionalityReducerService.reduceDimensionality(Config.getDimensionalityReductionMethodName(), pcaArgumentList)
+else:
+    eigenvectorsDictionary = descriptorsDictionary
 
 #The next step is to use Bag of visual words approach.
 # Create Training Data for clustering

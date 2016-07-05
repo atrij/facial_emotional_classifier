@@ -9,6 +9,8 @@ class Config:
     #Preprocessing
     isPreProcessingDone = False
 
+    shouldPerformPCA = True
+
     bovwClusterCount = 256
 
     @staticmethod

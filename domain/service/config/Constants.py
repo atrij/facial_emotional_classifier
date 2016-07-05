@@ -22,3 +22,9 @@ class Constants:
 
     # Descriptor Pooling Methods
     bagOfVisualWords = "BoVW"
+
+    # Lists of methods/databases
+    datasetList = [cohn_Kanade_extended]
+    desriptorExtractorMethodList = [sift]
+    dimensionalityReductionMethodList = [pca]
+    descriptorPoolingMethodList = [bagOfVisualWords]
