@@ -1,22 +1,23 @@
 #Imports
+from data.service.DatasetService import DatasetService
+from data.service.ImageProviderService import ImageProvider
 from domain.service.config.Constants import Constants
-from domain.service.dataset.DatasetOrganiserService import DatasetOrganiser
-from domain.service.dataset.ImageProviderService import ImageProvider
 from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractor
 from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPooler
 from domain.service.dimensionality_reduction.DimensionalityReducerService import DimensionalityReducer
-from domain.service.image_operations.ImageProcessorService import ImageProcessor
+from domain.service.image_operations.ImagePreProcessService import ImagePreProcessService
 
 emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions
 datasetPathImages = Constants.datasetPathImages
 
-# Organise dataset
-DatasetOrganiser.organiseDataset(emotions, datasetPathEmotions, datasetPathImages)
+# Organise service
+DatasetService.organiseDataset(Constants.cohn_Kanade_extended, emotions, datasetPathEmotions, datasetPathImages)
 
 # Pre-process the images and save
+preProcessingMethodList = [Constants.grayScaleConversion]
 for emotion in emotions:
-    ImageProcessor.performPreprocessing(emotion)
+    ImagePreProcessService.performPreprocessing(preProcessingMethodList, emotion)
 
 # Split into training data and test data
 trainingData, testData = ImageProvider.splitDataset(emotions)
