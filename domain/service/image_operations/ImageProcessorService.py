@@ -1,5 +1,6 @@
 import cv2
-from ImageProvider import ImageProvider
+
+from domain.service.dataset.ImageProviderService import ImageProvider
 
 
 class ImageProcessor:

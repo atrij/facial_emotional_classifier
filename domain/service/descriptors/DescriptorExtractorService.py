@@ -1,4 +1,4 @@
-from SIFT import SIFT
+from SIFTService import SIFT
 
 
 class DescriptorExtractor:

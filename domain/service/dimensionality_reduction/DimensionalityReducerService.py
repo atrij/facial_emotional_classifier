@@ -1,4 +1,4 @@
-from dimensionality_reduction.PrincipalComponentAnalysis import PrincipalComponentAnalysis
+from domain.service.dimensionality_reduction.PrincipalComponentAnalysisService import PrincipalComponentAnalysis
 
 
 class DimensionalityReducer:

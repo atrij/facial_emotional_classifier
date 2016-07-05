@@ -1,11 +1,11 @@
 #Imports
-from config.Constants import Constants
-from dataset.DatasetOrganiser import DatasetOrganiser
-from descriptors.DescriptorExtractor import DescriptorExtractor
-from dimensionality_reduction.DimensionalityReducer import DimensionalityReducer
-from image_operations.ImageProcessor import ImageProcessor
-from image_operations.ImageProvider import ImageProvider
-from pooling.DescriptorPooler import DescriptorPooler
+from domain.service.config.Constants import Constants
+from domain.service.dataset.DatasetOrganiserService import DatasetOrganiser
+from domain.service.dataset.ImageProviderService import ImageProvider
+from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractor
+from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPooler
+from domain.service.dimensionality_reduction.DimensionalityReducerService import DimensionalityReducer
+from domain.service.image_operations.ImageProcessorService import ImageProcessor
 
 emotions = Constants.emotions
 datasetPathEmotions = Constants.datasetPathEmotions

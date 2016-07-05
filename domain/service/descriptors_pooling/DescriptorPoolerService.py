@@ -1,4 +1,4 @@
-from pooling.BagOfVisualWords import BagOfVisualWords
+from domain.service.descriptors_pooling.BagOfVisualWordsService import BagOfVisualWords
 
 
 class DescriptorPooler:
