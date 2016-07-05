@@ -13,3 +13,9 @@ class Constants:
 
     #Datasets
     cohn_Kanade_extended = "CK+"
+
+    # Descriptor Extraction Methods
+    sift = "SIFT"
+
+    #Dimensionality Reduction Methods
+    pca = "PCA"

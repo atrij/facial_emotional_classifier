@@ -35,12 +35,12 @@ print imageDictionary
 print imageDictionary[emotions[1]][0].shape # 3 Dimensional vector
 
 # Calculate Descriptors
-argumentList = [0, 3, 0.03, 10, 1.6]
-descriptorsDictionary = DescriptorExtractor.extractDescriptors("SIFT", argumentList, imageDictionary, emotions)
+siftArgumentList = [0, 3, 0.03, 10, 1.6]
+descriptorsDictionary = DescriptorExtractor.extractDescriptors(Constants.sift, siftArgumentList, imageDictionary, emotions)
 
 # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
 pcaArgumentList = [descriptorsDictionary, emotions]
-eigenvectorsDictionary = DimensionalityReducer.reduceDimensionality("PCA", pcaArgumentList)
+eigenvectorsDictionary = DimensionalityReducer.reduceDimensionality(Constants.pca, pcaArgumentList)
 
 # Eg. of an image's descriptors
 print eigenvectorsDictionary[emotions[1]][0].shape # 128*128 matrix.
