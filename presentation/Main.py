@@ -1,6 +1,5 @@
 #Imports
 from data.service.DatasetService import DatasetService
-from data.service.ImageProviderService import ImageProvider
 from domain.service.config.Constants import Constants
 from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractor
 from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPooler
@@ -15,12 +14,12 @@ datasetPathImages = Constants.datasetPathImages
 DatasetService.organiseDataset(Constants.cohn_Kanade_extended, emotions, datasetPathEmotions, datasetPathImages)
 
 # Pre-process the images and save
-preProcessingMethodList = [Constants.grayScaleConversion]
+preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR]
 for emotion in emotions:
     ImagePreProcessService.performPreprocessing(preProcessingMethodList, emotion)
 
 # Split into training data and test data
-trainingData, testData = ImageProvider.splitDataset(emotions)
+trainingData, testData = DatasetService.splitDataset(emotions)
 
 # Eg. of a training data
 print trainingData[emotions[1]][0]
@@ -29,9 +28,9 @@ print trainingData[emotions[1]][0]
 print testData[emotions[1]][0]
 
 #Create imageDictionary for training Data
-imageDictionary = ImageProvider.getImageDictionaryFromFilePaths(trainingData, emotions)
+imageDictionary = DatasetService.getImageDictionaryFromFilePaths(trainingData, emotions)
 
-# Eg. of an image
+# Eg. of an image dictionary and image
 print imageDictionary
 print imageDictionary[emotions[1]][0].shape # 3 Dimensional vector
 

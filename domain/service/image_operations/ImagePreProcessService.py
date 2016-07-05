@@ -1,6 +1,6 @@
 import cv2
 
-from data.service.ImageProviderService import ImageProvider
+from data.service.DatasetService import DatasetService
 from domain.service.config.Constants import Constants
 
 
@@ -25,7 +25,7 @@ class ImagePreProcessService:
         if Constants.faceDetectionHAAR in methodList:
             faceDetectionHAAR = True
 
-        files = ImageProvider.getImages(emotion)
+        files = DatasetService.getImages(emotion)
 
         fileNumber = 0
 
