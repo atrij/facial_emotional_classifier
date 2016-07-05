@@ -1,11 +1,12 @@
 #Imports
-from data.service.DatasetService import DatasetService
 from domain.service.config.Config import Config
 from domain.service.config.Constants import Constants
+from domain.service.dataset.DatasetService import DatasetService
 from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractor
 from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPooler
 from domain.service.dimensionality_reduction.DimensionalityReducerService import DimensionalityReducer
 from domain.service.image_operations.ImagePreProcessService import ImagePreProcessService
+
 
 def constructTrainingDescriptorsList():
     trainingDescriptorsList = []

@@ -1,8 +1,8 @@
 import glob
-from shutil import copyfile
 import random
 import cv2
 
+from data.service.Database import Database
 from domain.service.config.Constants import Constants
 
 
@@ -22,7 +22,7 @@ class DatasetService:
         testData = {}
 
         for emotion in emotions:
-            files = glob.glob("dataset\\%s\\*" % emotion)
+            files = Database.getProcessedFiles(emotion)
             random.shuffle(files)
 
             training = files[:int(len(files) * 0.2)]  # get first 80% of file list
@@ -40,7 +40,7 @@ class DatasetService:
     @staticmethod
     def getImages(emotion):
 
-        files = glob.glob("sorted_set\\%s\\*" % emotion)
+        files = Database.getImages(emotion)
         return files
 
     @staticmethod
@@ -65,8 +65,7 @@ class DatasetService:
     @staticmethod
     def __organiseCKDataset(datasetPathEmotions, datasetPathImages, emotions):
 
-        participants = glob.glob(
-            datasetPathEmotions + "/*")  # Returns a list of all folders with participant numbers (eg. source_emotions/S005)
+        participants = Database.getAllParticipants(datasetPathEmotions)
 
         for x in participants:
             part = "%s" % x[-4:]  # store current participant number (eg. S005)
@@ -84,16 +83,11 @@ class DatasetService:
                         float(
                             file.readline()))  # emotions are encoded as a float, readline as float, then convert to integer.
 
-                    sourcefile_emotion = glob.glob(datasetPathImages + "/%s/%s/*" % (part, current_session))[
-                        -1]  # get path for last image in sequence, which contains the emotion
+                    sourcefile_emotion = Database.getPathForImageContainingFullEmotion(datasetPathImages, part, current_session)
 
-                    sourcefile_neutral = glob.glob(datasetPathImages + "/%s/%s/*" % (part, current_session))[
-                        0]  # do same for neutral imageD
+                    sourcefile_neutral = Database.getPathForImageContainingNoEmotion(datasetPathImages, part, current_session)
 
-                    dest_neut = "sorted_set\\neutral\\%s" % sourcefile_neutral[
-                                                            25:]  # Generate path to put neutral image
-                    dest_emot = "sorted_set\\%s\\%s" % (
-                        emotions[emotion], sourcefile_emotion[25:])  # Do same for emotion containing image
+                    dest_neut = Database.generatePathForNeutralImage(sourcefile_neutral)
+                    dest_emot = Database.generatePathForFullEmotionImage(emotions, emotion, sourcefile_emotion)
 
-                    copyfile(sourcefile_neutral, dest_neut)  # Copy file
-                    copyfile(sourcefile_emotion, dest_emot)  # Copy file
+                    Database.copyFiles(sourcefile_neutral, sourcefile_emotion, dest_neut, dest_emot)

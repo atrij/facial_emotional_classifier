@@ -1,7 +1,7 @@
 import cv2
 
-from data.service.DatasetService import DatasetService
 from domain.service.config.Constants import Constants
+from domain.service.dataset.DatasetService import DatasetService
 
 
 class ImagePreProcessService:
