@@ -12,7 +12,9 @@ class Constants:
     faceDetectionHAAR = "FACE_DETECTION_HAAR"
     averaging = "AVERAGING"
     gaussianBlur = "GAUSSIAN_BLUR"
-    medianBlur = "MEDIAN_BLUR"
+    medianBlur = "MEDIAN_BLUR" # Use for salt-pepper noise
+    bilateralFiltering = "BILATERAL_FILTERING" # highly effective in noise reduction while keeping edges sharp. It is very slow
+
 
     #Datasets
     cohn_Kanade_extended = "CK+"

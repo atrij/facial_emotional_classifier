@@ -5,7 +5,6 @@ from domain.service.dataset.DatasetService import DatasetService
 
 
 class ImagePreProcessService:
-
     faceDet1 = cv2.CascadeClassifier("/Users/harsh/opencv/data/haarcascades/haarcascade_frontalface_default.xml")
     faceDet2 = cv2.CascadeClassifier("/Users/harsh/opencv/data/haarcascades/haarcascade_frontalface_alt2.xml")
     faceDet3 = cv2.CascadeClassifier("/Users/harsh/opencv/data/haarcascades/haarcascade_frontalface_alt.xml")
@@ -19,6 +18,7 @@ class ImagePreProcessService:
         averaging = False
         gaussianBlur = False
         medianBlur = False
+        bilateralFiltering = False
 
         # Check if grayScale conversion is required
         if Constants.grayScaleConversion in methodList:
@@ -39,6 +39,10 @@ class ImagePreProcessService:
         # Check if median blur is required
         if Constants.medianBlur in methodList:
             medianBlur = True
+
+        # Check if bilateral filtering is required
+        if Constants.bilateralFiltering in methodList:
+            bilateralFiltering = True
 
         files = DatasetService.getImages(emotion)
         print ("Number of images before preprocessing for %s is %d", (emotion, len(files)))
@@ -68,7 +72,18 @@ class ImagePreProcessService:
             if medianBlur is True:
                 medianBlurredImage = ImagePreProcessService.__applyMedianBlur(gaussianBlurredImage, 5)
 
-            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), medianBlurredImage)
+            bilateralFilteredImage = medianBlurredImage
+            if bilateralFiltering is True:
+                bilateralFilteredImage = ImagePreProcessService.__applyBilateralFiltering(medianBlurredImage, 9, 75, 75)
+                # Filter size: Large filters
+                # (d > 5) are very slow, so it is recommended to use d=5 for real-time applications,
+                # and perhaps d=9 for offline applications that need heavy noise filtering. Sigma values:
+                # For simplicity, you can set the 2 sigma values to be the same. If they are small (< 10),
+                # the filter will not have much effect, whereas if they are large (> 150), they will have a very strong effect,
+                # making the image look "cartoonish".
+
+
+            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), bilateralFilteredImage)
 
             fileNumber = fileNumber + 1
 
@@ -76,13 +91,17 @@ class ImagePreProcessService:
     def __detectFaceInImage(image):
 
         # Detect face using 4 different classifiers
-        face1 = ImagePreProcessService.faceDet1.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5),
+        face1 = ImagePreProcessService.faceDet1.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10,
+                                                                 minSize=(5, 5),
                                                                  flags=cv2.CASCADE_SCALE_IMAGE)
-        face2 = ImagePreProcessService.faceDet2.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5),
+        face2 = ImagePreProcessService.faceDet2.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10,
+                                                                 minSize=(5, 5),
                                                                  flags=cv2.CASCADE_SCALE_IMAGE)
-        face3 = ImagePreProcessService.faceDet3.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5),
+        face3 = ImagePreProcessService.faceDet3.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10,
+                                                                 minSize=(5, 5),
                                                                  flags=cv2.CASCADE_SCALE_IMAGE)
-        face4 = ImagePreProcessService.faceDet4.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10, minSize=(5, 5),
+        face4 = ImagePreProcessService.faceDet4.detectMultiScale(image, scaleFactor=1.1, minNeighbors=10,
+                                                                 minSize=(5, 5),
                                                                  flags=cv2.CASCADE_SCALE_IMAGE)
 
         # Go over detected faces, stop at first detected face, return empty if no face.
@@ -99,7 +118,6 @@ class ImagePreProcessService:
             facefeatures = ""
 
         return facefeatures
-
 
     @staticmethod
     def __cutFace(facefeatures, grayImage):
@@ -123,10 +141,15 @@ class ImagePreProcessService:
 
     @staticmethod
     def __applyGaussainBlur(image, kernelSize, sigma):
-        gaussianBlurredImage = cv2.GaussianBlur(image, (kernelSize,kernelSize), sigma)
+        gaussianBlurredImage = cv2.GaussianBlur(image, (kernelSize, kernelSize), sigma)
         return gaussianBlurredImage
 
     @staticmethod
     def __applyMedianBlur(image, kernelSize):
         medianBlurredImage = cv2.medianBlur(image, kernelSize)
         return medianBlurredImage
+
+    @staticmethod
+    def __applyBilateralFiltering(image, kernelSize, sigma1, sigma2):
+        bilateralFilteredImage = cv2.bilateralFilter(image, kernelSize, sigma1, sigma2)
+        return bilateralFilteredImage
