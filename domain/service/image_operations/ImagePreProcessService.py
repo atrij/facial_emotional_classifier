@@ -17,6 +17,7 @@ class ImagePreProcessService:
         grayScaleConversion = False
         faceDetectionHAAR = False
         averaging = False
+        gaussianBlur = False
 
         # Check if grayScale conversion is required
         if Constants.grayScaleConversion in methodList:
@@ -26,8 +27,13 @@ class ImagePreProcessService:
         if Constants.faceDetectionHAAR in methodList:
             faceDetectionHAAR = True
 
+        # Check if averaging is required
         if Constants.averaging in methodList:
             averaging = True
+
+        # Check if gaussian Blur is required
+        if Constants.gaussianBlur in methodList:
+            gaussianBlur = True
 
         files = DatasetService.getImages(emotion)
         print ("Number of images before preprocessing for %s is %d", (emotion, len(files)))
@@ -47,9 +53,13 @@ class ImagePreProcessService:
 
             averagedImage = outputImage
             if averaging is True:
-                averagedImage = cv2.blur(outputImage, (5,5))
+                averagedImage = ImagePreProcessService.__applyImageAveraging(outputImage)
 
-            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), averagedImage)
+            gaussianBlurredImage = averagedImage
+            if gaussianBlur is True:
+                gaussianBlurredImage = ImagePreProcessService.__applyGaussainBlur(averagedImage)
+
+            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), gaussianBlurredImage)
 
             fileNumber = fileNumber + 1
 
@@ -96,3 +106,12 @@ class ImagePreProcessService:
 
         grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return grayImage
+
+    @staticmethod
+    def __applyImageAveraging(image):
+        averagedImage = cv2.blur(image, (5, 5))
+        return averagedImage
+
+    @staticmethod
+    def __applyGaussainBlur(image):
+        gaussianBlurredImage = cv2.GaussianBlur(image, (5,5), 0)
