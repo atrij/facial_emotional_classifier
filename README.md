@@ -6,7 +6,9 @@ We cannot distribute it so you will have to request it yourself (from the link a
 
 DatasetOrganiser.py contains the code to organise the dataset. 
 
-It's best if the images are all of the same size and have only a face on them (no clutter). Thus, We find the face on each image, convert to grayscale, crop it and save the image to the dataset. We a HAAR filter from OpenCV to automate face finding.
+Image pre-processing options like mean filter, gaussian filter, median filter and bilateral filtering are available. They can be turned on in the Config.py file.
+
+It's best if the images are all of the same size and have only a face on them (no clutter). Thus, We find the face on each image, convert to grayscale, crop it, apply some smoothening techniques and save the image to the dataset. We a HAAR filter from OpenCV to automate face finding. 
 
 To build an image representation, we use Bag of Words (BoW) and Fisher Vector (FV) approaches. Both BoW and FV featurizations rely on a beforehand computation of local descriptors of images. We choose
 to consider the very popular SIFT (Scale-Invariant Feature Transform) descriptors. Very interesting properties of these descriptors with respect to our problem are their invariance to affine
