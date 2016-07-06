@@ -16,6 +16,7 @@ class ImagePreProcessService:
 
         grayScaleConversion = False
         faceDetectionHAAR = False
+        averaging = False
 
         # Check if grayScale conversion is required
         if Constants.grayScaleConversion in methodList:
@@ -24,6 +25,9 @@ class ImagePreProcessService:
         # Check if face detection is required
         if Constants.faceDetectionHAAR in methodList:
             faceDetectionHAAR = True
+
+        if Constants.averaging in methodList:
+            averaging = True
 
         files = DatasetService.getImages(emotion)
         print ("Number of images before preprocessing for %s is %d", (emotion, len(files)))
@@ -41,7 +45,11 @@ class ImagePreProcessService:
                 facefeatures = ImagePreProcessService.__detectFaceInImage(grayImage)
                 outputImage = ImagePreProcessService.__cutFace(facefeatures, grayImage)
 
-            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), outputImage)
+            averagedImage = outputImage
+            if averaging is True:
+                averagedImage = cv2.blur(outputImage, (5,5))
+
+            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), averagedImage)
 
             fileNumber = fileNumber + 1
 

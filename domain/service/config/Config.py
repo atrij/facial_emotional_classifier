@@ -31,7 +31,7 @@ class Config:
 
     @staticmethod
     def getPreprocessingMethodList():
-        preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR]
+        preProcessingMethodList = [Constants.grayScaleConversion, Constants.faceDetectionHAAR, Constants.averaging]
         return preProcessingMethodList
 
     @staticmethod

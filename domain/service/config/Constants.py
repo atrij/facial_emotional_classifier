@@ -10,6 +10,7 @@ class Constants:
     # PreProcessing Methods
     grayScaleConversion = "GRAY_SCALE_CONVERSION"
     faceDetectionHAAR = "FACE_DETECTION_HAAR"
+    averaging = "AVERAGING"
 
     #Datasets
     cohn_Kanade_extended = "CK+"
