@@ -18,6 +18,7 @@ class ImagePreProcessService:
         faceDetectionHAAR = False
         averaging = False
         gaussianBlur = False
+        medianBlur = False
 
         # Check if grayScale conversion is required
         if Constants.grayScaleConversion in methodList:
@@ -34,6 +35,10 @@ class ImagePreProcessService:
         # Check if gaussian Blur is required
         if Constants.gaussianBlur in methodList:
             gaussianBlur = True
+
+        # Check if median blur is required
+        if Constants.medianBlur in methodList:
+            medianBlur = True
 
         files = DatasetService.getImages(emotion)
         print ("Number of images before preprocessing for %s is %d", (emotion, len(files)))
@@ -53,13 +58,17 @@ class ImagePreProcessService:
 
             averagedImage = outputImage
             if averaging is True:
-                averagedImage = ImagePreProcessService.__applyImageAveraging(outputImage)
+                averagedImage = ImagePreProcessService.__applyImageAveraging(outputImage, 5)
 
             gaussianBlurredImage = averagedImage
             if gaussianBlur is True:
-                gaussianBlurredImage = ImagePreProcessService.__applyGaussainBlur(averagedImage)
+                gaussianBlurredImage = ImagePreProcessService.__applyGaussainBlur(averagedImage, 5, 0)
 
-            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), gaussianBlurredImage)
+            medianBlurredImage = gaussianBlurredImage
+            if medianBlur is True:
+                medianBlurredImage = ImagePreProcessService.__applyMedianBlur(gaussianBlurredImage, 5)
+
+            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), medianBlurredImage)
 
             fileNumber = fileNumber + 1
 
@@ -108,10 +117,16 @@ class ImagePreProcessService:
         return grayImage
 
     @staticmethod
-    def __applyImageAveraging(image):
-        averagedImage = cv2.blur(image, (5, 5))
+    def __applyImageAveraging(image, kernelSize):
+        averagedImage = cv2.blur(image, (kernelSize, kernelSize))
         return averagedImage
 
     @staticmethod
-    def __applyGaussainBlur(image):
-        gaussianBlurredImage = cv2.GaussianBlur(image, (5,5), 0)
+    def __applyGaussainBlur(image, kernelSize, sigma):
+        gaussianBlurredImage = cv2.GaussianBlur(image, (kernelSize,kernelSize), sigma)
+        return gaussianBlurredImage
+
+    @staticmethod
+    def __applyMedianBlur(image, kernelSize):
+        medianBlurredImage = cv2.medianBlur(image, kernelSize)
+        return medianBlurredImage

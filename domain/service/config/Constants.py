@@ -12,6 +12,7 @@ class Constants:
     faceDetectionHAAR = "FACE_DETECTION_HAAR"
     averaging = "AVERAGING"
     gaussianBlur = "GAUSSIAN_BLUR"
+    medianBlur = "MEDIAN_BLUR"
 
     #Datasets
     cohn_Kanade_extended = "CK+"
