@@ -134,7 +134,7 @@ class ImagePreProcessService:
 
         for (x, y, w, h) in facefeatures:  # get coordinates and size of rectangle containing face
             grayImage = grayImage[y:y + h, x:x + w]  # Cut the frame to size
-            out = cv2.resize(grayImage, (400, 400))
+            out = cv2.resize(grayImage, (100, 100))
 
             return out
 
