@@ -2,8 +2,8 @@
 from domain.service.config.Config import Config
 from domain.service.config.Constants import Constants
 from domain.service.dataset.DatasetService import DatasetService
-from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractor
-from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPooler
+from domain.service.descriptors.DescriptorExtractorService import DescriptorExtractorService
+from domain.service.descriptors_pooling.DescriptorPoolerService import DescriptorPoolerService
 from domain.service.dimensionality_reduction.DimensionalityReducerService import DimensionalityReducerService
 from domain.service.image_operations.ImagePreProcessService import ImagePreProcessService
 
@@ -58,7 +58,7 @@ print ("Shape of a random image -- ", imageDictionary[emotions[1]][0].shape) # 3
 
 # Calculate Descriptors
 siftArgumentList = [0, 3, 0.03, 10, 1.6]
-descriptorsDictionary = DescriptorExtractor.extractDescriptors(Config.getDescriptorExractorMethodName(), siftArgumentList, imageDictionary, emotions)
+descriptorsDictionary = DescriptorExtractorService.extractDescriptors(Config.getDescriptorExractorMethodName(), siftArgumentList, imageDictionary, emotions)
 
 if Config.shouldPerformDimensionalityReduction is True:
     # Applying PCA - Principal Component Analysis - It is used for dimensionality reduction
@@ -73,4 +73,4 @@ trainingDescriptorsList = constructTrainingDescriptorsList()
 print ("Length of training Descriptors - ", len(trainingDescriptorsList))
 
 bovwArgumentList = [Config.bovwClusterCount, trainingDescriptorsList, eigenvectorsDictionary, emotions]
-histogramDictionary = DescriptorPooler.poolDescriptors(Config.getDescriptorPoolingMethodName(), bovwArgumentList)
+histogramDictionary = DescriptorPoolerService.poolDescriptors(Config.getDescriptorPoolingMethodName(), bovwArgumentList)

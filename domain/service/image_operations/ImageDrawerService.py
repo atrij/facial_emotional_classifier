@@ -1,6 +1,6 @@
 import cv2
 
-class ImageDrawer:
+class ImageDrawerService:
 
     @staticmethod
     def drawKeypoints(imageList, keypointList):

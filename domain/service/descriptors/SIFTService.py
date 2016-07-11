@@ -1,6 +1,6 @@
 import cv2
 
-class SIFT:
+class SIFTService:
 
     def __init__(self, features, octaveLayers, contrastThreshold, edgeThreshold, sigma):
         self.features = features

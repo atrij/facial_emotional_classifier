@@ -14,7 +14,7 @@ class Constants:
     gaussianBlur = "GAUSSIAN_BLUR"
     medianBlur = "MEDIAN_BLUR" # Use for salt-pepper noise
     bilateralFiltering = "BILATERAL_FILTERING" # highly effective in noise reduction while keeping edges sharp. It is very slow
-
+    histogramEqualisation = "HISTOGRAM_EQUALISATION"
 
     #Datasets
     cohn_Kanade_extended = "CK+"

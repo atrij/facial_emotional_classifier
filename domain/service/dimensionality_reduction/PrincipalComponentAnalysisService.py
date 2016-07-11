@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-class PrincipalComponentAnalysis:
+class PrincipalComponentAnalysisService:
 
     @staticmethod
     def computeEigenvectors(descriptorsDictionary, emotions):

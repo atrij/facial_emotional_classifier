@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.cluster import KMeans
 
-class BagOfVisualWords:
+class BagOfVisualWordsService:
 
     def __init__(self, clusterCount, trainingDescriptorsList):
         self.clusterCount = clusterCount

@@ -19,6 +19,7 @@ class ImagePreProcessService:
         gaussianBlur = False
         medianBlur = False
         bilateralFiltering = False
+        histogramEqualisation = False
 
         # Check if grayScale conversion is required
         if Constants.grayScaleConversion in methodList:
@@ -43,6 +44,10 @@ class ImagePreProcessService:
         # Check if bilateral filtering is required
         if Constants.bilateralFiltering in methodList:
             bilateralFiltering = True
+
+        # Check if histogram Equalisation is required
+        if Constants.histogramEqualisation in methodList:
+            histogramEqualisation = True
 
         files = DatasetService.getImages(emotion)
         print ("Number of images before preprocessing for %s is %d", (emotion, len(files)))
@@ -82,8 +87,13 @@ class ImagePreProcessService:
                 # the filter will not have much effect, whereas if they are large (> 150), they will have a very strong effect,
                 # making the image look "cartoonish".
 
+            histogramEqualisedImage = bilateralFilteredImage
+            if histogramEqualisation is True:
+                histogramEqualisedImage = ImagePreProcessService.__applyHistogramEqualisation(bilateralFilteredImage)
+                # Histogram Equalisation is used for contrast enhancement in case of very dark/bright images
 
-            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), bilateralFilteredImage)
+
+            cv2.imwrite("dataset\\%s\\%s.jpg" % (emotion, fileNumber), histogramEqualisedImage)
 
             fileNumber = fileNumber + 1
 
@@ -124,7 +134,7 @@ class ImagePreProcessService:
 
         for (x, y, w, h) in facefeatures:  # get coordinates and size of rectangle containing face
             grayImage = grayImage[y:y + h, x:x + w]  # Cut the frame to size
-            out = cv2.resize(grayImage, (350, 350))
+            out = cv2.resize(grayImage, (400, 400))
 
             return out
 
@@ -153,3 +163,8 @@ class ImagePreProcessService:
     def __applyBilateralFiltering(image, kernelSize, sigma1, sigma2):
         bilateralFilteredImage = cv2.bilateralFilter(image, kernelSize, sigma1, sigma2)
         return bilateralFilteredImage
+
+    @staticmethod
+    def __applyHistogramEqualisation(image):
+        histogramEqualisedImage = cv2.equalizeHist(image)
+        return histogramEqualisedImage
