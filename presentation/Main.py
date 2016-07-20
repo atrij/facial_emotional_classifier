@@ -20,7 +20,7 @@ def constructTrainingDescriptorsList():
 
     return trainingDescriptorsList
 
-print " ----- START ------ "
+print " ----- START PROGRAM------ "
 
 # Check Configurations
 Config.checkConfigurations()
